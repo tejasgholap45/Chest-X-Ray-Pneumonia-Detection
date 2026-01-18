@@ -1,120 +1,152 @@
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
-import numpy as np
 import cv2
 import tempfile
 import os
 
-# ---------------- PAGE CONFIG ----------------
+# ================== PAGE CONFIG ==================
 st.set_page_config(
     page_title="Pneumonia Detection | Tejas Gholap",
     page_icon="🫁",
     layout="wide"
 )
 
-# ---------------- CUSTOM CSS ----------------
+# ================== PREMIUM CSS ==================
 st.markdown("""
 <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Inter', sans-serif;
+}
+
 .main {
-    background-color: #f8f9fa;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
 }
-.profile-card {
-    background-color: white;
-    padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0px 4px 12px rgba(0,0,0,0.08);
+
+.glass {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 25px;
+    backdrop-filter: blur(12px);
+    box-shadow: 0 8px 32px rgba(0,0,0,0.35);
 }
-.title-text {
-    font-size: 40px;
-    font-weight: 700;
-    color: #0d6efd;
+
+.title {
+    font-size: 46px;
+    font-weight: 800;
+    color: #ffffff;
 }
-.subtitle-text {
+
+.subtitle {
     font-size: 18px;
-    color: #555;
+    color: #d1d5db;
 }
+
+button {
+    background: linear-gradient(90deg, #00c6ff, #0072ff) !important;
+    color: white !important;
+    border-radius: 12px !important;
+    font-size: 16px !important;
+    font-weight: 600 !important;
+}
+
+.profile a {
+    color: #00c6ff;
+    text-decoration: none;
+    font-weight: 600;
+}
+
 .footer {
     text-align: center;
-    padding: 10px;
-    color: gray;
+    color: #9ca3af;
+    margin-top: 30px;
 }
 </style>
 """, unsafe_allow_html=True)
 
-# ---------------- HEADER ----------------
-st.markdown("<div class='title-text'>🫁 Chest X-Ray Pneumonia Detection</div>", unsafe_allow_html=True)
-st.markdown("<div class='subtitle-text'>Deep Learning based YOLO Object Detection App</div>", unsafe_allow_html=True)
-st.markdown("---")
+# ================== HEADER ==================
+st.markdown('<div class="glass">', unsafe_allow_html=True)
+st.markdown('<div class="title">🫁 Chest X-Ray Pneumonia Detection</div>', unsafe_allow_html=True)
+st.markdown('<div class="subtitle">AI-powered Pneumonia Detection using YOLO</div>', unsafe_allow_html=True)
+st.markdown('</div>', unsafe_allow_html=True)
 
-# ---------------- LOAD MODEL ----------------
+st.markdown("<br>", unsafe_allow_html=True)
+
+# ================== LOAD MODEL ==================
 @st.cache_resource
 def load_model():
     return YOLO("best.pt")
 
 model = load_model()
 
-# ---------------- LAYOUT ----------------
-col1, col2 = st.columns([2, 1])
+# ================== MAIN LAYOUT ==================
+left, right, profile = st.columns([2, 2, 1])
 
-# ---------------- IMAGE UPLOAD ----------------
-with col1:
-    st.subheader("📤 Upload Chest X-Ray Image")
-    uploaded_file = st.file_uploader(
-        "Upload X-Ray Image (JPG / PNG)",
+# ================== INPUT ==================
+with left:
+    st.markdown('<div class="glass">', unsafe_allow_html=True)
+    st.subheader("📥 Input X-Ray Image")
+
+    uploaded = st.file_uploader(
+        "Upload Chest X-Ray (JPG / PNG)",
         type=["jpg", "jpeg", "png"]
     )
 
-    if uploaded_file:
-        image = Image.open(uploaded_file).convert("RGB")
-        st.image(image, caption="Uploaded X-Ray", use_column_width=True)
+    if uploaded:
+        input_image = Image.open(uploaded).convert("RGB")
+        st.image(input_image, use_column_width=True)
 
-        if st.button("🔍 Detect Pneumonia"):
-            with st.spinner("Running model inference..."):
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ================== OUTPUT ==================
+with right:
+    st.markdown('<div class="glass">', unsafe_allow_html=True)
+    st.subheader("📤 Model Prediction")
+
+    if uploaded:
+        if st.button("🚀 Run Detection"):
+            with st.spinner("Analyzing X-Ray using AI..."):
                 with tempfile.NamedTemporaryFile(delete=False, suffix=".jpg") as tmp:
-                    image.save(tmp.name)
+                    input_image.save(tmp.name)
                     results = model(tmp.name, conf=0.25)
 
-                res_img = results[0].plot()
-                res_img = cv2.cvtColor(res_img, cv2.COLOR_BGR2RGB)
+                output_img = results[0].plot()
+                output_img = cv2.cvtColor(output_img, cv2.COLOR_BGR2RGB)
 
                 st.success("Detection Completed ✅")
-                st.image(res_img, caption="Detection Result", use_column_width=True)
+                st.image(output_img, use_column_width=True)
+    else:
+        st.info("Upload an image to see prediction")
 
-# ---------------- PROFILE SECTION ----------------
-with col2:
-    st.markdown("<div class='profile-card'>", unsafe_allow_html=True)
-    st.subheader("👨‍💻 Developer Profile")
+    st.markdown('</div>', unsafe_allow_html=True)
+
+# ================== PROFILE ==================
+with profile:
+    st.markdown('<div class="glass profile">', unsafe_allow_html=True)
+    st.subheader("👨‍💻 Developer")
 
     st.markdown("""
-**Name:** Tejas Gholap  
-📧 **Email:** tejasgholap961@gmail.com  
+**Tejas Gholap**  
+📧 tejasgholap961@gmail.com  
 
-🔗 **LinkedIn:**  
-https://www.linkedin.com/in/tejas-gholap-bb3417300/
-
-💻 **GitHub:**  
-https://github.com/tejasgholap45  
-
-🌐 **Portfolio:**  
-https://tejas-gholap-data-analys-2x22p9s.gamma.site/
+🔗 [LinkedIn](https://www.linkedin.com/in/tejas-gholap-bb3417300/)  
+💻 [GitHub](https://github.com/tejasgholap45)  
+🌐 [Portfolio](https://tejas-gholap-data-analys-2x22p9s.gamma.site/)
 """)
 
     st.markdown("---")
     st.markdown("""
-**Skills Used**
-- Python
-- YOLO (Ultralytics)
-- Computer Vision
-- Deep Learning
-- Streamlit
+**Tech Stack**
+- Python  
+- YOLO (Ultralytics)  
+- Computer Vision  
+- Deep Learning  
+- Streamlit  
 """)
 
-    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown('</div>', unsafe_allow_html=True)
 
-# ---------------- FOOTER ----------------
-st.markdown("---")
-st.markdown(
-    "<div class='footer'>© 2026 | Pneumonia Detection App by Tejas Gholap</div>",
-    unsafe_allow_html=True
-)
+# ================== FOOTER ==================
+st.markdown('<div class="footer">© 2026 | Built by Tejas Gholap</div>', unsafe_allow_html=True)
