@@ -1,16 +1,15 @@
 import streamlit as st
 from ultralytics import YOLO
 from PIL import Image
-import cv2
 import tempfile
 
+# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Pneumonia Detection | Tejas Gholap",
     page_icon="🫁",
     layout="wide"
 )
 
-# ---------------- HEADER ----------------
 st.title("🫁 Chest X-Ray Pneumonia Detection")
 st.caption("AI-powered Pneumonia Detection using YOLO")
 st.divider()
@@ -22,13 +21,12 @@ def load_model():
 
 model = load_model()
 
-# ---------------- MAIN LAYOUT ----------------
-input_col, output_col, profile_col = st.columns([2, 2, 1])
+# ---------------- LAYOUT ----------------
+col1, col2 = st.columns(2)
 
 # ---------------- INPUT ----------------
-with input_col:
+with col1:
     st.subheader("📥 Input X-Ray Image")
-
     uploaded = st.file_uploader(
         "Upload Chest X-Ray (JPG / PNG)",
         type=["jpg", "jpeg", "png"]
@@ -39,7 +37,7 @@ with input_col:
         st.image(input_image, use_column_width=True)
 
 # ---------------- OUTPUT ----------------
-with output_col:
+with col2:
     st.subheader("📤 Model Prediction")
 
     if uploaded:
@@ -49,35 +47,19 @@ with output_col:
                     input_image.save(tmp.name)
                     results = model(tmp.name, conf=0.25)
 
-                output_img = results[0].plot()
-                output_img = cv2.cvtColor(output_img, cv2.COLOR_BGR2RGB)
+                # 🔥 PIL OUTPUT (NO cv2, NO libGL)
+                output_image = results[0].plot(pil=True)
 
-                st.success("Detection Completed")
-                st.image(output_img, use_column_width=True)
+                st.success("Detection Completed ✅")
+                st.image(output_image, use_column_width=True)
     else:
-        st.info("Upload an image to see prediction")
+        st.info("Upload image to see prediction")
 
-# ---------------- PROFILE ----------------
-with profile_col:
-    st.subheader("👨‍💻 Developer")
-
-    st.markdown("""
-**Tejas Gholap**  
+st.divider()
+st.markdown("""
+**Developer:** Tejas Gholap  
 📧 tejasgholap961@gmail.com  
-
 🔗 [LinkedIn](https://www.linkedin.com/in/tejas-gholap-bb3417300/)  
 💻 [GitHub](https://github.com/tejasgholap45)  
 🌐 [Portfolio](https://tejas-gholap-data-analys-2x22p9s.gamma.site/)
 """)
-
-    st.markdown("**Tech Stack**")
-    st.markdown("""
-- Python  
-- YOLO (Ultralytics)  
-- Computer Vision  
-- Deep Learning  
-- Streamlit  
-""")
-
-st.divider()
-st.caption("© 2026 | Pneumonia Detection App by Tejas Gholap")
