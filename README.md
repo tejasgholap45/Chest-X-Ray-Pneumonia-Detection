@@ -48,18 +48,25 @@ The goal of this project is to demonstrate **end-to-end AI model development and
 
 ---
 
-## 📂 Project Structure  
+📂 Project Structure
+---
 
 Chest-X-Ray-Pneumonia-Detection/
+
 │
+
 ├── app.py                # Gradio web application
+
 ├── best.pt               # Trained YOLO model weights
+
 ├── requirements.txt      # Dependencies
+
 ├── README.md              # Documentation
+
 └── LICENSE                # Project licens
 
 
-##▶️ Run Locally
+▶️ Run Locally
 ---
 
 1️⃣ Clone Repository
@@ -72,7 +79,9 @@ pip install -r requirements.txt
 3️⃣ Run Application
 python app.py
 
-##📊 Model Details
+---
+
+📊 Model Details
 ---
 
 Model Architecture: YOLO Object Detection
@@ -85,16 +94,22 @@ Metrics: Precision, Recall, mAP
 
 Framework: PyTorch
 
-##🏗️ System Architecture
+---
+
+🏗️ System Architecture
 ---
 User Image Upload → YOLO Model Inference → Bounding Box Detection → Web UI Output
 
-##⚠️ Disclaimer
+---
+
+⚠️ Disclaimer
 ---
 This project is intended for educational and research purposes only.
 It is not a medical diagnostic tool and should not be used for clinical decisions.
 
-##📌 Future Enhancements
+---
+
+📌 Future Enhancements
 ---
 Pneumonia vs Normal classification with confidence score
 
@@ -106,7 +121,9 @@ Cloud deployment on AWS/GCP
 
 Model explainability (Grad-CAM)
 
-##👨‍💻 Developer
+---
+
+👨‍💻 Developer
 ---
 
 Tejas Gholap
@@ -119,12 +136,16 @@ Tejas Gholap
 
 🌐 Portfolio: https://tejas-gholap-data-analys-2x22p9s.gamma.site/
 
-##📜 License
+---
+
+📜 License
 ---
 
 This project is licensed under the MIT License – see the LICENSE file for details.
 
-##⭐ Acknowledgements
+---
+
+⭐ Acknowledgements
 ---
 Ultralytics YOLO
 
