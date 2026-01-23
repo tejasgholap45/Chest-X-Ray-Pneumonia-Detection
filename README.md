@@ -55,15 +55,15 @@ Chest-X-Ray-Pneumonia-Detection/
 
 │
 
-├── app.py                # Gradio web application
+├── app.py                    # Gradio web application
 
-├── best.pt               # Trained YOLO model weights
+├── best.pt                   # Trained YOLO model weights
 
-├── requirements.txt      # Dependencies
+├── requirements.txt          # Dependencies
 
-├── README.md              # Documentation
+├── README.md                 # Documentation
 
-└── LICENSE                # Project licens
+└── LICENSE                   # Project licens
 
 
 ▶️ Run Locally
@@ -71,7 +71,6 @@ Chest-X-Ray-Pneumonia-Detection/
 
 1️⃣ Clone Repository
 git clone https://github.com/tejasgholap45/Chest-X-Ray-Pneumonia-Detection.git
-cd Chest-X-Ray-Pneumonia-Detection
 
 2️⃣ Install Dependencies
 pip install -r requirements.txt
